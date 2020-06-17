@@ -17,7 +17,6 @@
             @foreach (var App in Model)
             {
                 int count = App.push_urls.Count<string>();
-                if (count > 1) { count--; }
                 <tr>
                     <td style="font-size: 22px; padding: 10px">@App.name</td>
                     <td style="font-size: 22px; padding: 10px">@App.live</td>

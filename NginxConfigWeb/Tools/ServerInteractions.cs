@@ -41,7 +41,6 @@ namespace NginxConfigWeb.Tools
         public static string firebaseRootUrl = "https://nginxconfiguration.firebaseio.com/";
         public static string firebaseToken;
 
-
         public static FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
 
         public static async Task UpdateConfig()
@@ -82,7 +81,7 @@ namespace NginxConfigWeb.Tools
 
                 foreach (var obj in jObject)
                 {
-                    if (obj.Key == "push")
+                    if (obj.Key == "push_urls")
                     {
                         if (obj.Value != null && (obj.Value).HasValues == true)
                         {
