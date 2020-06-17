@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NginxConfigWeb.Tools;
 
 namespace NginxConfigWeb
 {
@@ -16,6 +17,7 @@ namespace NginxConfigWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ServerInteractions.firebaseToken = configuration.GetValue<string>("FireBaseKey");
         }
 
         public IConfiguration Configuration { get; }

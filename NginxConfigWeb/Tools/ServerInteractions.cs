@@ -36,13 +36,15 @@ namespace NginxConfigWeb.Tools
         }
     }
 
-    public static class ConfigReadWrite
+    public static class ServerInteractions
     {
-        static string firebaseRootUrl = "https://nginxconfiguration.firebaseio.com/";
+        public static string firebaseRootUrl = "https://nginxconfiguration.firebaseio.com/";
+        public static string firebaseToken;
 
-        static FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult("h5JY4Of3Qnf3BrK6ifV0TLZKRUTv3AMLFimbQVRl") });
 
-        static async Task UpdateConfig()
+        public static FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+
+        public static async Task UpdateConfig()
         {
             string CopyFileToLocation = "/usr/local/nginx/conf/nginx.conf";
 
@@ -70,7 +72,7 @@ namespace NginxConfigWeb.Tools
             foreach (var app in apps)
             {
                 string newCat = string.Empty;
-                string url = firebaseRootUrl + "applications/" + app.Key + "/.json";
+                string url = $"{firebaseRootUrl}/applications/{app.Key}/.json?auth={firebaseToken}";
 
                 HttpResponseMessage webResponse = await webClient.GetAsync(url);
                 string jsonContent = await webResponse.Content.ReadAsStringAsync();
@@ -120,9 +122,16 @@ namespace NginxConfigWeb.Tools
                 System.IO.File.Delete(CopyFileToLocation);
 
             System.IO.File.Copy(newFile, CopyFileToLocation);
+        }
 
-            var output = "/usr/local/nginx/sbin/nginx -s stop".Bash();
-            output = "/usr/local/nginx/sbin/nginx".Bash();
+        public static string StartServer()
+        {
+            return "/usr/local/nginx/sbin/nginx".Bash();
+        }
+
+        public static string StopServer()
+        {
+            return "/usr/local/nginx/sbin/nginx -s stop".Bash();
         }
     }
 }

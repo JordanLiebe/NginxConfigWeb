@@ -22,35 +22,41 @@ namespace NginxConfigWeb.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string message)
         {
-            var ConfigFileLocation = _configuration.GetSection("configuration").GetSection("configFileLocationWindows").Value;
-            ConfigReadWrite.ReadConfig(ConfigFileLocation);
+            var Apps = await FirebaseInteractions.GetApplicationsAsync();
 
-            List<string> apps = new List<string>();
+            if (message != "" && message != null)
+                ViewBag.message = message;
+            else
+                ViewBag.message = "System Good";
 
-            apps.Add("Jmliebe");
-            apps.Add("Bethlehem");
-
-            return View(apps);
+            return View(Apps);
         }
 
-        public IActionResult Update()
+        [HttpPost]
+        public async Task<IActionResult> Control(string Action)
         {
-            return View();
-        }
+            string Output = "";
 
-        public IActionResult submit(string name, string live, string record, string[] push_urls)
-        {
-            RtmpApplications rtmpApp = new RtmpApplications()
+            switch(Action)
             {
-                name = name,
-                live = live,
-                record = record,
-                push_urls = push_urls
-            };
+                case "Start":
+                    Output = ServerInteractions.StartServer();
+                    break;
+                case "Stop":
+                    Output = ServerInteractions.StopServer();
+                    break;
+                case "Generate":
+                    await ServerInteractions.UpdateConfig();
+                    break;
+                default:
+                    Output = "Unknown Command";
+                    break;
+            }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { message = Output });
         }
 
         public IActionResult Privacy()

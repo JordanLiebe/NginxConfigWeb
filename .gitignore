@@ -1,4 +1,4 @@
 NginxConfigWeb/bin
 NginxConfigWeb/obj
 NginxConfigWeb/appsettings.json
-NginxConfigWeb/appsettingsDevelopment.json
+NginxConfigWeb/appsettings.Development.json

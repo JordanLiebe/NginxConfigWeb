@@ -1,12 +1,52 @@
-﻿@model List<string>
+﻿@model List<NginxConfigWeb.Models.RtmpApplications> 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">RTMP Applications</h1>
-    @foreach(string app in Model)
-    {
-        <div>@app</div>
-    }
-</div>
+    <div class="text-center">
+        <h1 class="display-4">Applications</h1>
+        <h3>[<a asp-action="Create" asp-controller="Application">Add</a>]</h3>
+        <table>
+            <tr>
+                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].name)</th>
+                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].live)</th>
+                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].push_urls)</th>
+                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].record)</th>
+                <th style="font-size: 25px; padding: 10px">Action</th>
+            </tr>
+            @foreach (var App in Model)
+            {
+                int count = App.push_urls.Count<string>();
+                if (count > 1) { count--; }
+                <tr>
+                    <td style="font-size: 22px; padding: 10px">@App.name</td>
+                    <td style="font-size: 22px; padding: 10px">@App.live</td>
+                    <td style="font-size: 22px; padding: 10px">@count</td>
+                    <td style="font-size: 22px; padding: 10px">@App.record</td>
+                    <td style="font-size: 22px; padding: 10px">
+                        <a asp-controller="Application" asp-action="Modify" asp-route-Id="@App.name">Edit</a> |
+                        <a asp-controller="Application" asp-action="Delete" asp-route-Id="@App.name">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <form asp-action="Control" style="padding: 10px">
+            <fieldset>
+                <input type="hidden" name="Action" value="Generate" />
+                <button>Generate Config</button>
+            </fieldset>
+        </form>
+        <form asp-action="Control" style="padding: 10px">
+            <fieldset>
+                <input type="hidden" name="Action" value="Start" />
+                <button>Start Server</button>
+            </fieldset>
+        </form>
+        <form asp-action="Control" style="padding: 10px">
+            <fieldset>
+                <input type="hidden" name="Action" value="Stop" />
+                <button>Stop Server</button>
+            </fieldset>
+        </form>
+        <div id="message">@ViewBag.message</div>
+    </div>

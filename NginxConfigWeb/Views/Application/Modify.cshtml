@@ -1,0 +1,55 @@
+﻿@model RtmpApplications
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Configure Nginx</h1>
+    <form method="post" asp-action="Modify">
+        <div>
+            <label>Name</label><br />
+            <input name="name" value="@Model.name" />
+        </div>
+        <div>
+            <label>Live</label><br />
+            <select name="live" >
+                @if (Model.live == "on")
+                {
+                    <option selected>on</option>
+                    <option>off</option>
+                }
+                else
+                {
+                    <option>on</option>
+                    <option selected>off</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label>Record</label><br />
+            <select name="record" >
+                @if (Model.record == "on")
+                {
+                    <option selected>on</option>
+                    <option>off</option>
+                }
+                else
+                {
+                    <option>on</option>
+                    <option selected>off</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label>Push Locations (5)</label><br />
+            <input name="push_urls[0]" value="@Model.push_urls[0]" /><br />
+            <input name="push_urls[1]" value="@Model.push_urls[1]" /><br />
+            <input name="push_urls[2]" value="@Model.push_urls[2]" /><br />
+            <input name="push_urls[3]" value="@Model.push_urls[3]"/><br />
+            <input name="push_urls[4]" value="@Model.push_urls[4]" /><br />
+        </div>
+        <div>
+            <button>Submit</button>
+        </div>
+    </form>
+</div>
