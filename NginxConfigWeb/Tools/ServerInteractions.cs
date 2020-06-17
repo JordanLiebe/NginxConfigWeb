@@ -41,10 +41,10 @@ namespace NginxConfigWeb.Tools
         public static string firebaseRootUrl = "https://nginxconfiguration.firebaseio.com/";
         public static string firebaseToken;
 
-        public static FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
-
         public static async Task UpdateConfig()
         {
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+
             string CopyFileToLocation = "/usr/local/nginx/conf/nginx.conf";
 
             string concat = "\n\nrtmp { \n" +
@@ -81,7 +81,7 @@ namespace NginxConfigWeb.Tools
 
                 foreach (var obj in jObject)
                 {
-                    if (obj.Key == "push_urls")
+                    if (obj.Key == "push")
                     {
                         if (obj.Value != null && (obj.Value).HasValues == true)
                         {
