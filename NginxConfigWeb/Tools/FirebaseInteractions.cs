@@ -12,11 +12,10 @@ namespace NginxConfigWeb.Tools
     public static class FirebaseInteractions
     {
         public static string firebaseRootUrl = "https://nginxconfiguration.firebaseio.com/";
-        public static string firebaseToken;
 
-        public static async Task<List<RtmpApplications>> GetApplicationsAsync()
+        public static async Task<List<RtmpApplications>> GetApplicationsAsync(string Token)
         {
-            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });
             var applications = firebase.Child("applications");
             var apps = await applications.OnceAsync<RtmpApplications>();
             List<RtmpApplications> RtmpApps = new List<RtmpApplications>();
@@ -35,9 +34,9 @@ namespace NginxConfigWeb.Tools
             return RtmpApps;
         }
 
-        public static async Task<RtmpApplications> GetApplicationByIdAsync(string Id)
+        public static async Task<RtmpApplications> GetApplicationByIdAsync(string Id, string Token)
         {
-            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });
             var applications = firebase.Child("applications");
             var apps = await applications.OnceAsync<RtmpApplications>();
             RtmpApplications AppPointer = null;
@@ -64,9 +63,9 @@ namespace NginxConfigWeb.Tools
             return AppPointer;
         }
 
-        public static async Task<bool> CreateApplication(RtmpApplications app)
+        public static async Task<bool> CreateApplication(RtmpApplications app, string Token)
         {
-            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });
             var applications = firebase.Child($"applications/{app.name}");
 
             try
@@ -82,9 +81,9 @@ namespace NginxConfigWeb.Tools
             return true;
         }
 
-        public static async Task<bool> UpdateApplication(RtmpApplications app)
+        public static async Task<bool> UpdateApplication(RtmpApplications app, string Token)
         {
-            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });
             var applications = firebase.Child($"applications/{app.name}");
 
             try
@@ -100,9 +99,9 @@ namespace NginxConfigWeb.Tools
             return true;
         }
 
-        public static async Task<bool> RemoveApplication(RtmpApplications app)
+        public static async Task<bool> RemoveApplication(RtmpApplications app, string Token)
         {
-            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });
             var applications = firebase.Child($"applications/{app.name}");
 
             try

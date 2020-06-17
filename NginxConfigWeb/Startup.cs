@@ -20,8 +20,7 @@ namespace NginxConfigWeb
 
             ServerInteractions.firebaseToken = configuration.GetValue<string>("FireBaseKey");
             ServerInteractions.firebaseRootUrl = configuration.GetValue<string>("FireBaseUrl");
-            FirebaseInteractions.firebaseToken = configuration.GetValue<string>("FireBaseKey");
-            FirebaseInteractions.firebaseRootUrl = configuration.GetValue<string>("FireBaseUrl");
+            FirebaseInteractions.firebaseRootUrl = ServerInteractions.firebaseRootUrl;
         }
 
         public IConfiguration Configuration { get; }

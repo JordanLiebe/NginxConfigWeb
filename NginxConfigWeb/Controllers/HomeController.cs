@@ -15,17 +15,19 @@ namespace NginxConfigWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly string _fireBaseToken;
 
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             _configuration = configuration;
             _logger = logger;
+            _fireBaseToken = configuration.GetValue<string>("FireBaseKey");
         }
 
         [HttpGet]
         public async Task<IActionResult> Index(string message)
         {
-            var Apps = await FirebaseInteractions.GetApplicationsAsync();
+            var Apps = await FirebaseInteractions.GetApplicationsAsync(_fireBaseToken);
 
             if (message != "" && message != null)
                 ViewBag.message = message;

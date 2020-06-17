@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using NginxConfigWeb.Models;
 using NginxConfigWeb.Tools;
 
@@ -10,6 +11,15 @@ namespace NginxConfigWeb.Controllers
 {
     public class ApplicationController : Controller
     {
+        private readonly IConfiguration _configuration;
+        private readonly string _fireBaseToken;
+
+        public ApplicationController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            _fireBaseToken = configuration.GetValue<string>("FireBaseKey");
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -27,7 +37,7 @@ namespace NginxConfigWeb.Controllers
                 push_urls = push_urls
             };
 
-            await FirebaseInteractions.CreateApplication(CreatedApp);
+            await FirebaseInteractions.CreateApplication(CreatedApp, _fireBaseToken);
 
             return RedirectToAction("Index", "Home");
         }
@@ -35,7 +45,7 @@ namespace NginxConfigWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Modify(string Id)
         {
-            var app = await FirebaseInteractions.GetApplicationByIdAsync(Id);
+            var app = await FirebaseInteractions.GetApplicationByIdAsync(Id, _fireBaseToken);
 
             return View(app);
         }
@@ -51,7 +61,7 @@ namespace NginxConfigWeb.Controllers
                 push_urls = push_urls
             };
 
-            await FirebaseInteractions.UpdateApplication(UpdatedApp);
+            await FirebaseInteractions.UpdateApplication(UpdatedApp, _fireBaseToken);
 
             return RedirectToAction("Index", "Home");
         }
@@ -59,9 +69,9 @@ namespace NginxConfigWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(string Id)
         {
-            var app = await FirebaseInteractions.GetApplicationByIdAsync(Id);
+            var app = await FirebaseInteractions.GetApplicationByIdAsync(Id, _fireBaseToken);
 
-            await FirebaseInteractions.RemoveApplication(app);
+            await FirebaseInteractions.RemoveApplication(app, _fireBaseToken);
 
             return RedirectToAction("Index", "Home");
         }
