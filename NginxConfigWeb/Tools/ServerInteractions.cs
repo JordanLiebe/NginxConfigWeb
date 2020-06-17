@@ -81,7 +81,7 @@ namespace NginxConfigWeb.Tools
 
                 foreach (var obj in jObject)
                 {
-                    if (obj.Key == "push")
+                    if (obj.Key == "push_urls")
                     {
                         if (obj.Value != null && (obj.Value).HasValues == true)
                         {
