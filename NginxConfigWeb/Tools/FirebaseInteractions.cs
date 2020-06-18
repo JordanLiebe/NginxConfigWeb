@@ -70,6 +70,7 @@ namespace NginxConfigWeb.Tools
 
             try
             {
+                app.name = null;
                 string json = JsonConvert.SerializeObject(app);
                 await applications.PutAsync(json);
             }
@@ -88,6 +89,7 @@ namespace NginxConfigWeb.Tools
 
             try
             {
+                app.name = null;
                 string json = JsonConvert.SerializeObject(app);
                 await applications.PutAsync(json);
             }

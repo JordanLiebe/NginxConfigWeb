@@ -91,14 +91,14 @@ namespace NginxConfigWeb.Tools
                                 {
                                     var urls = subObj.Value<string>();
                                     if (urls != null)
-                                        newCat += "\t\t\tpush: " + urls + ";\n";
+                                        newCat += "\t\t\tpush " + urls + ";\n";
                                 }
                             }
                         }
                     }
                     else
                     {
-                        newCat += "\t\t\t" + obj.Key + ": " + obj.Value + ";\n";
+                        newCat += "\t\t\t" + obj.Key + " " + obj.Value + ";\n";
                     }
                 }
 
