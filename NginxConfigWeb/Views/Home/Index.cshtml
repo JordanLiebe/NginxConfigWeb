@@ -6,17 +6,19 @@
     <div class="text-center">
         <h1 class="display-4">Applications</h1>
         <h3>[<a asp-action="Create" asp-controller="Application">Add</a>]</h3>
-        <table>
+        <table width="100%">
             <tr>
-                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].name)</th>
-                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].live)</th>
-                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].push_urls)</th>
-                <th style="font-size: 25px; padding: 10px">@Html.DisplayNameFor(model => model[0].record)</th>
-                <th style="font-size: 25px; padding: 10px">Action</th>
+                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].name)</th>
+                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].live)</th>
+                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].push_urls)</th>
+                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].record)</th>
+                <th style="font-size: 25px; padding: 5px">Action</th>
             </tr>
             @foreach (var App in Model)
             {
-                int count = App.push_urls.Count<string>();
+                int count = 0;
+                if(App.push_urls != null)
+                    count = App.push_urls.Length;
                 <tr>
                     <td style="font-size: 22px; padding: 10px">@App.name</td>
                     <td style="font-size: 22px; padding: 10px">@App.live</td>

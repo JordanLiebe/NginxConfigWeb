@@ -47,7 +47,12 @@ namespace NginxConfigWeb.Tools
                 {
                     app.Object.name = app.Key;
 
-                    List<string> pushUrls = new List<string>(app.Object.push_urls);
+                    List<string> pushUrls;
+
+                    if (app.Object.push_urls == null)
+                        pushUrls = new List<string>();
+                    else
+                        pushUrls = new List<string>(app.Object.push_urls);
 
                     for (int i = pushUrls.Count; i < 5; i++)
                     {

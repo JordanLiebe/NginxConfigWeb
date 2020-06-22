@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,7 @@ namespace NginxConfigWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string name, string live, string record, string[] push_urls)
+        public async Task<IActionResult> Create(string name, string live, string record, [Optional] string[] push_urls)
         {
             RtmpApplications CreatedApp = new RtmpApplications
             {
@@ -51,7 +52,7 @@ namespace NginxConfigWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Modify(string name, string live, string record, string[] push_urls)
+        public async Task<IActionResult> Modify(string name, string live, string record, [Optional] string[] push_urls)
         {
             RtmpApplications UpdatedApp = new RtmpApplications
             {

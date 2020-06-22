@@ -8,11 +8,11 @@
     <form method="post" asp-action="Modify">
         <div>
             <label>Name</label><br />
-            <input name="name" value="@Model.name" />
+            <input name="name" value="@Model.name" size="50" />
         </div>
         <div>
             <label>Live</label><br />
-            <select name="live" >
+            <select name="live" style="padding: 5px;">
                 @if (Model.live == "on")
                 {
                     <option selected>on</option>
@@ -27,7 +27,7 @@
         </div>
         <div>
             <label>Record</label><br />
-            <select name="record" >
+            <select name="record" style="padding: 5px;">
                 @if (Model.record == "on")
                 {
                     <option selected>on</option>
@@ -42,11 +42,11 @@
         </div>
         <div>
             <label>Push Locations (5)</label><br />
-            <input name="push_urls[0]" value="@Model.push_urls[0]" /><br />
-            <input name="push_urls[1]" value="@Model.push_urls[1]" /><br />
-            <input name="push_urls[2]" value="@Model.push_urls[2]" /><br />
-            <input name="push_urls[3]" value="@Model.push_urls[3]"/><br />
-            <input name="push_urls[4]" value="@Model.push_urls[4]" /><br />
+            <input name="push_urls[0]" value="@Model.push_urls[0]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[1]" value="@Model.push_urls[1]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[2]" value="@Model.push_urls[2]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[3]" value="@Model.push_urls[3]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[4]" value="@Model.push_urls[4]" size="125" style="margin: 10px" /><br />
         </div>
         <div>
             <button>Submit</button>

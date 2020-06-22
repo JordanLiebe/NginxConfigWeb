@@ -1,4 +1,5 @@
 ﻿using Firebase.Database;
+using LiteDB;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using NginxConfigWeb.Models;
@@ -125,12 +126,16 @@ namespace NginxConfigWeb.Tools
 
         public static string StartServer()
         {
-            return "/usr/local/nginx/sbin/nginx".Bash();
+            string output = "/usr/local/nginx/sbin/nginx".Bash();
+            Console.WriteLine(output);
+            return output;
         }
 
         public static string StopServer()
         {
-            return "/usr/local/nginx/sbin/nginx -s stop".Bash();
+            string output = "/usr/local/nginx/sbin/nginx -s stop".Bash();
+            Console.WriteLine(output);
+            return output;
         }
     }
 }
