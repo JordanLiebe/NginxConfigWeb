@@ -45,15 +45,18 @@ namespace NginxConfigWeb.Controllers
             switch(Action)
             {
                 case "Start":
-                    Output = "Starting Server...";
-                    ServerInteractions.StartServer();
+
+                    _logger.LogInformation("Starting Server...");
+                    Output = ServerInteractions.StartServer();
+                    _logger.LogInformation(Output);
                     break;
                 case "Stop":
-                    Output = "Stopping Server...";
-                    ServerInteractions.StopServer();
+                    _logger.LogInformation("Stopping Server...");
+                    Output = ServerInteractions.StopServer();
+                    _logger.LogInformation(Output);
                     break;
                 case "Generate":
-                    Output = "Generating Config...";
+                    _logger.LogInformation("Generating Config...");
                     await ServerInteractions.UpdateConfig();
                     break;
                 default:

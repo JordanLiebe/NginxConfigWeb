@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NginxConfigWeb.Models;
 using NginxConfigWeb.Tools;
 
@@ -12,12 +13,14 @@ namespace NginxConfigWeb.Controllers
 {
     public class ApplicationController : Controller
     {
+        private readonly ILogger<ApplicationController> _logger;
         private readonly IConfiguration _configuration;
         private readonly string _fireBaseToken;
 
-        public ApplicationController(IConfiguration configuration)
+        public ApplicationController(IConfiguration configuration, ILogger<ApplicationController> logger)
         {
             _configuration = configuration;
+            _logger = logger;
             _fireBaseToken = configuration.GetValue<string>("FireBaseKey");
         }
 

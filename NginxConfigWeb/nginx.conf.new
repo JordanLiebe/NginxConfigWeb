@@ -56,25 +56,17 @@ rtmp {
 		listen 1935;
 		chunk_size 4096;
 
-		application Temp {
-			live: on;
-			name: Temp;
-			push_urls: [
-  "https://www.google.com",
-  "https://www.jmliebe.com",
-  "TEST123456"
-];
-			record: off;
+		application bethlehem {
+			live on;
+			push rtmp://a.rtmp.youtube.com/live2/pum4-2hbv-9rvz-0d6x;
+			push rtmp://127.0.0.1:1936/rtmp/3122568411134263?s_bl=1&s_sc=3122568527800918&s_sw=0&s_vt=api-s&a=AbzoR8KEYdws_G67;
+			record off;
 		} 
 
-		application bethlehem {
-			live: on;
-			name: bethlehem;
-			push_urls: [
-  "rtmp://a.rtmp.youtube.com/live2/x0br-605k-b6tg-caew-4tpq",
-  "rtmp://127.0.0.1:1936/rtmp/2012240592241474?s_bl=1&s_ps=1&s_sw=0&s_vt=api-s&a=Abz-xFEf1ehM7NN8"
-];
-			record: off;
+		application blc_backup {
+			live on;
+			push rtmp://0.0.0.0;
+			record off;
 		} 
 
 	} 
