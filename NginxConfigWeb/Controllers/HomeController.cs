@@ -60,7 +60,7 @@ namespace NginxConfigWeb.Controllers
                     await ServerInteractions.UpdateConfig();
                     break;
                 default:
-                    Output = "Unknown Command";
+                    _logger.LogInformation("Unknown Command");
                     break;
             }
 
