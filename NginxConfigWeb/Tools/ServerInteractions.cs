@@ -127,14 +127,14 @@ namespace NginxConfigWeb.Tools
         public static string StartServer()
         {
             string output = "/usr/local/nginx/sbin/nginx".Bash();
-            Console.WriteLine(output);
+            Console.WriteLine("CMD: " + output);
             return output;
         }
 
         public static string StopServer()
         {
             string output = "/usr/local/nginx/sbin/nginx -s stop".Bash();
-            Console.WriteLine(output);
+            Console.WriteLine("CMD: " + output);
             return output;
         }
     }

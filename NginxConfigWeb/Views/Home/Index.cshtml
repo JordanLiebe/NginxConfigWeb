@@ -31,23 +31,31 @@
                 </tr>
             }
         </table>
-        <form asp-action="Control" style="padding: 10px">
-            <fieldset>
-                <input type="hidden" name="Action" value="Generate" />
-                <button>Generate Config</button>
-            </fieldset>
-        </form>
-        <form asp-action="Control" style="padding: 10px">
-            <fieldset>
-                <input type="hidden" name="Action" value="Start" />
-                <button>Start Server</button>
-            </fieldset>
-        </form>
-        <form asp-action="Control" style="padding: 10px">
-            <fieldset>
-                <input type="hidden" name="Action" value="Stop" />
-                <button>Stop Server</button>
-            </fieldset>
-        </form>
-        <div id="message">@ViewBag.message</div>
+        <div style="display: flex; flex-direction: row; justify-content: space-around; padding: 30px">
+            <div>
+                <form asp-action="Control" style="padding: 10px">
+                    <fieldset>
+                        <input type="hidden" name="Action" value="Generate" />
+                        <button>Generate Config</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div>
+                <form asp-action="Control" style="padding: 10px">
+                    <fieldset>
+                        <input type="hidden" name="Action" value="Start" />
+                        <button>Start Server</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div>
+                <form asp-action="Control" style="padding: 10px">
+                    <fieldset>
+                        <input type="hidden" name="Action" value="Stop" />
+                        <button>Stop Server</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div id="message" style="color: blue">@ViewBag.message</div>
     </div>

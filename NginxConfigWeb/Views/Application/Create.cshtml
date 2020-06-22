@@ -8,32 +8,35 @@
     <form method="post" asp-action="Create">
         <div>
             <label>Name</label><br />
-            <input name="name" />
+            <input name="name" size="50" />
         </div>
         <div>
             <label>Live</label><br />
-            <select name="live" >
+            <select name="live" style="padding: 5px;">
                 <option selected>on</option>
                 <option>off</option>
             </select>
         </div>
         <div>
             <label>Record</label><br />
-            <select name="record" >
+            <select name="record" style="padding: 5px;">
                 <option>on</option>
                 <option selected>off</option>
             </select>
         </div>
         <div>
             <label>Push Locations (5)</label><br />
-            <input name="push_urls[0]" /><br />
-            <input name="push_urls[1]" /><br />
-            <input name="push_urls[2]" /><br />
-            <input name="push_urls[3]" /><br />
-            <input name="push_urls[4]" /><br />
+            <input name="push_urls[0]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[1]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[2]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[3]" size="125" style="margin: 10px" /><br />
+            <input name="push_urls[4]" size="125" style="margin: 10px" /><br />
         </div>
         <div>
             <button>Create</button>
+            <div>
+                <a asp-action="Index" asp-controller="Home">Back</a>
+            </div>
         </div>
     </form>
 </div>
