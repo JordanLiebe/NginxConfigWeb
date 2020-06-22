@@ -4,9 +4,8 @@
 }
 
     <div class="text-center">
-        <h1 class="display-4">Applications</h1>
-        <h3>[<a asp-action="Create" asp-controller="Application">Add</a>]</h3>
-        <table width="100%">
+        <h2>Applications [<a asp-action="Create" asp-controller="Application">Add</a>]</h2>
+        <table width="100%" style="margin-bottom: 50px;">
             <tr>
                 <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].name)</th>
                 <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].live)</th>
@@ -17,7 +16,7 @@
             @foreach (var App in Model)
             {
                 int count = 0;
-                if(App.push_urls != null)
+                if (App.push_urls != null)
                     count = App.push_urls.Length;
                 <tr>
                     <td style="font-size: 22px; padding: 10px">@App.name</td>
@@ -31,20 +30,22 @@
                 </tr>
             }
         </table>
-        <div style="display: flex; flex-direction: row; justify-content: space-around; padding: 30px">
+        <hr />
+        <h2>Commands</h2>
+        <div style="display: flex; flex-direction: row; justify-content: space-around; padding: 30px; margin-bottom: 50px;">
             <div>
                 <form asp-action="Control" style="padding: 10px">
                     <fieldset>
-                        <input type="hidden" name="Action" value="Generate" />
-                        <button>Generate Config</button>
+                        <input type="hidden" name="Action" value="Start" />
+                        <button style="padding: 10px; font-size: 22px;">Start Server</button>
                     </fieldset>
                 </form>
             </div>
             <div>
                 <form asp-action="Control" style="padding: 10px">
                     <fieldset>
-                        <input type="hidden" name="Action" value="Start" />
-                        <button>Start Server</button>
+                        <input type="hidden" name="Action" value="Generate" />
+                        <button style="padding: 10px; font-size: 22px;">Generate Config</button>
                     </fieldset>
                 </form>
             </div>
@@ -52,10 +53,12 @@
                 <form asp-action="Control" style="padding: 10px">
                     <fieldset>
                         <input type="hidden" name="Action" value="Stop" />
-                        <button>Stop Server</button>
+                        <button style="padding: 10px; font-size: 22px;">Stop Server</button>
                     </fieldset>
                 </form>
             </div>
         </div>
-        <div id="message" style="color: blue">@ViewBag.message</div>
+        <hr />
+        <h2>Server Status</h2>
+        <div id="message" style="color: red; font-size: 22px;">@ViewBag.message</div>
     </div>
