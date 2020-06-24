@@ -31,10 +31,9 @@ namespace NginxConfigWeb.Tools
                 }
             };
             process.Start();
-            string result = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
+            string errors = process.StandardError.ReadToEnd();
             process.WaitForExit();
-            return error;
+            return errors;
         }
     }
 
