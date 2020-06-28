@@ -8,7 +8,7 @@ http {
         listen      8080;
 
         # This URL provides RTMP statistics in XML
-        location /stat {
+        location / {
                 rtmp_stat all;
                 rtmp_stat_stylesheet stat.xsl;
                 # Allow access from any visitor
@@ -21,7 +21,7 @@ http {
             # XML stylesheet to view RTMP stats.
             # Copy stat.xsl wherever you want
             # and put the full directory path here
-            root /home/jordan/Documents/nginx-rtmp-module-dev;
+            root /usr/local/nginx;
         }
 		
 		location /live {
