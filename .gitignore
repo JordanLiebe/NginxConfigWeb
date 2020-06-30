@@ -2,3 +2,4 @@ NginxConfigWeb/bin
 NginxConfigWeb/obj
 NginxConfigWeb/appsettings.json
 NginxConfigWeb/appsettings.Development.json
+NginxConfigWeb/publish.sh
