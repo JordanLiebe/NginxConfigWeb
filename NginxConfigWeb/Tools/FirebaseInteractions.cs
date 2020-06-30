@@ -34,6 +34,27 @@ namespace NginxConfigWeb.Tools
             return RtmpApps;
         }
 
+        public static async Task<List<Article>> GetArticlesAsync(string Token)
+        {
+            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });
+            var helpArticles = firebase.Child("help-articles");
+            var articles = await helpArticles.OnceAsync<Article>();
+            List<Article> HelpArticles = new List<Article>();
+
+            foreach (var article in articles)
+            {
+                HelpArticles.Add(new Article
+                {
+                    name = article.Object.name,
+                    content = article.Object.content,
+                    creator = article.Object.creator,
+                    created = article.Object.created
+                });
+            }
+
+            return HelpArticles;
+        }
+
         public static async Task<RtmpApplications> GetApplicationByIdAsync(string Id, string Token)
         {
             FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(Token) });

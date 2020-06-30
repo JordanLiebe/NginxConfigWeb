@@ -1,0 +1,95 @@
+﻿@model string
+@{
+    ViewData["Page"] = Model;
+    ViewData["Title"] = "Help";
+}
+<h1>Help Center</h1>
+
+<div style="padding: 20px;">
+    @switch (Model)
+    {
+        case null:
+            <h2>Table Of Contents</h2>
+            <ol>
+                <li><a asp-action="Help" asp-route-Page="Startup">Turning Everything On</a></li>
+                <li><a asp-action="Help" asp-route-Page="SlideShow">Starting the Slideshow</a></li>
+                <li><a asp-action="Help" asp-route-Page="Media Server">Setting up Media Server</a></li>
+            </ol>
+            break;
+        case "Startup":
+            <h2>System Startup</h2>
+            <p>Start each of the systems in the following order.</p>
+            <ol>
+                <li>Streaming Computer</li>
+                <li>Powerpoint Laptop</li>
+                <li>Sound System</li>
+            </ol>
+            <div>
+                <img src="~/images/DellDesktopEdited.jpg" alt="Dell Desktop" />
+                <img src="~/images/ToshibaLaptopEdited.jpg" alt="Toshiba Laptop" />
+            </div>
+            <a asp-action="Help" asp-route-Page="">Back</a>
+            break;
+        case "SlideShow":
+            <h2>Starting SlideShow</h2>
+            <p>Start each of the systems in the following order.</p>
+            <ol>
+                <li>Open File Explorer. (Win + 'E')</li>
+                <li>Click 'This PC' on the right hand panel.</li>
+                <li>
+                    Check if there is an S:/ Drive, and choose one of the below options.
+                    <ul>
+                        <li>If it exists, Open the S:/ Drive called 'Shared Files'</li>
+                        <li>If it doesnt exist, Enter '\\MAIN-OFFICE\Bethlehem Lutheran Church\Shared Files' in the URL.</li>
+                    </ul>
+                </li>
+                <li>Open the 'Services' folder.</li>
+                <li>Open the folder corresponding to the current month.</li>
+                <li>Open the folder named for todays service.</li>
+                <li>Double Click the powerpoint in the folder.</li>
+                <li>Done!</li>
+            </ol>
+            <div>
+                <img src="~/images/ExplorerEdited.png" alt="Explorer Screenshot" />
+            </div>
+            <a asp-action="Help" asp-route-Page="">Back</a>
+            break;
+        case "Media Server":
+            <ol>
+                <li>Stop the server. (Just in case it wasnt last time)</li>
+                <li>Click the edit button on the application named "bethlehem".</li>
+                <li>Change the connection strings to match the values given by Facebook and Youtube.</li>
+                <li>Save the new values.</li>
+                <li>Click "Generate Config" and wait for the website to finish proccessing the request (Min: 1 minute).</li>
+                <li>Click the "Start Server" button.</li>
+                <li>Done!</li>
+            </ol>
+            <a asp-action="Help" asp-route-Page="">Back</a>
+            break;
+        case "OBS":
+            <ol>
+                <li>Open OBS (Open Broadcaster Software) from the Desktop.</li>
+                <li>Click the "Settings" button on the bottom right panel.</li>
+                <li>Navigate to the Stream Section.</li>
+                <li>Replace the Stream key with todays date in the form MonthDayYear. Ex: june012020 (June 1st 2020).</li>
+                <li>The server value shouldnt change but in case you need it the default is rtmp://bethlehem-server/bethlehem</li>
+                <li>Click Start Stream. (Optional: You can also click Start Recording if you want to record the service to the computer.)</li>
+                <li>Done!</li>
+            </ol>
+            <a asp-action="Help" asp-route-Page="">Back</a>
+            break;
+        case "About":
+            <ul>
+                <li>License: Open Source</li>
+                <li>Code Repository: <a href="https://github.com/JordanLiebe/NginxConfigWeb">Github</a></li>
+                <li>Database: <a href="https://nginxconfiguration.firebaseio.com/">Firebase</a></li>
+            </ul>
+            <a asp-action="Help" asp-route-Page="">Back</a>
+            break;
+        default:
+            <h2>Page Not Found</h2>
+            <p>This page does not exist or has been deleted.</p>
+            <a asp-action="Help" asp-route-Page="">Back</a>
+            break;
+    }
+</div>

@@ -72,6 +72,14 @@ namespace NginxConfigWeb.Controllers
             return View();
         }
 
+<<<<<<< Updated upstream
+=======
+        public IActionResult Help(string Page)
+        {
+            return View("Help", Page);
+        }
+
+>>>>>>> Stashed changes
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
