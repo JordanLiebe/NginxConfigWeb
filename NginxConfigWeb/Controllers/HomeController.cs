@@ -57,7 +57,7 @@ namespace NginxConfigWeb.Controllers
                     break;
                 case "Generate":
                     _logger.LogInformation("Generating Config...");
-                    await ServerInteractions.UpdateConfig();
+                    Output = await ServerInteractions.UpdateConfig(_logger);
                     break;
                 default:
                     _logger.LogInformation("Unknown Command");

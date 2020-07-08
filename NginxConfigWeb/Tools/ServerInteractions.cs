@@ -1,6 +1,7 @@
 ﻿using Firebase.Database;
 using LiteDB;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using NginxConfigWeb.Models;
 using System;
@@ -42,8 +43,10 @@ namespace NginxConfigWeb.Tools
         public static string firebaseRootUrl = "https://nginxconfiguration.firebaseio.com/";
         public static string firebaseToken;
 
-        public static async Task UpdateConfig()
+        public static async Task<string> UpdateConfig(ILogger logger)
         {
+            logger.LogInformation("Updating Configuration");
+
             FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
 
             string CopyFileToLocation = "/usr/local/nginx/conf/nginx.conf";
@@ -122,18 +125,37 @@ namespace NginxConfigWeb.Tools
                 System.IO.File.Delete(CopyFileToLocation);
 
             System.IO.File.Copy(newFile, CopyFileToLocation);
+
+            return "Configuration Generated!";
         }
 
         public static string StartServer()
         {
             string output = "/usr/local/nginx/sbin/nginx".Bash();
-            return output;
+
+            if (output != null)
+                return "An Error Occured. This service might already be running.";
+            else
+                return "Server Starting...";
         }
 
         public static string StopServer()
         {
-            string output = "/usr/local/nginx/sbin/nginx -s stop".Bash();
-            return output;
+            string output = string.Empty;
+
+            try
+            {
+                output = "/usr/local/nginx/sbin/nginx -s stop".Bash();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error");
+            }
+
+            if (output != null)
+                return "An Error Occured. This service might not be running yet.";
+            else
+                return "Server Stopping...";
         }
     }
 }
