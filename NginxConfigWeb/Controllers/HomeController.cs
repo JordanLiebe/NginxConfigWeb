@@ -50,7 +50,7 @@ namespace NginxConfigWeb.Controllers
                 case "Start":
 
                     _logger.LogInformation("Starting Server...");
-                    Message = ServerInteractions.StartServer(_logger);
+                    Message = await ServerInteractions.StartServer(_logger);
                     _logger.LogInformation(Message);
                     break;
                 case "Stop":

@@ -139,13 +139,20 @@ namespace NginxConfigWeb.Tools
             }
         }
 
-        public static string StartServer(ILogger logger)
+        public static async Task<string> StartServer(ILogger logger)
         {
             string output = string.Empty;
+            string error = string.Empty;
+
+            await UpdateConfig(logger);
 
             try
             {
-                "/usr/local/nginx/sbin/nginx".Bash();
+                error = "/usr/local/nginx/sbin/nginx".Bash();
+                if (error != string.Empty)
+                {
+                    throw new Exception(error);
+                }
                 output = "Server Started";
             }
             catch(Exception exception)
@@ -160,10 +167,15 @@ namespace NginxConfigWeb.Tools
         public static string StopServer(ILogger logger)
         {
             string output = string.Empty;
+            string error = string.Empty;
 
             try
             {
-                "/usr/local/nginx/sbin/nginx -s stop".Bash();
+                error = "/usr/local/nginx/sbin/nginx -s stop".Bash();
+                if (error != string.Empty)
+                {
+                    throw new Exception(error);
+                }
                 output = "Server Stopped";
             }
             catch(Exception exception)
