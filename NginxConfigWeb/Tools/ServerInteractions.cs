@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using LiteDB;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -45,98 +47,114 @@ namespace NginxConfigWeb.Tools
 
         public static async Task<string> UpdateConfig(ILogger logger)
         {
-            logger.LogInformation("Updating Configuration");
-
-            FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
-
-            string CopyFileToLocation = "/usr/local/nginx/conf/nginx.conf";
-
-            string concat = "\n\nrtmp { \n" +
-                "\tserver { \n" +
-                "\t\tlisten 1935;\n" +
-                "\t\tchunk_size 4096;\n\n";
-
-            string SourceFile = "./nginx.conf.base";
-            string newFile = "./nginx.conf.new";
-
-            var FbChild = firebase.Child("applications");
-
-            var FbObservable = FbChild.AsObservable<RtmpApplications>();
-
-            if (System.IO.File.Exists(newFile))
-                System.IO.File.Delete(newFile);
-
-            System.IO.File.Copy(SourceFile, newFile);
-
-            HttpClient webClient = new HttpClient();
-
-            var apps = await FbChild.OnceAsync<RtmpApplications>();
-
-            foreach (var app in apps)
+            try
             {
-                string newCat = string.Empty;
-                string url = $"{firebaseRootUrl}/applications/{app.Key}/.json?auth={firebaseToken}";
+                logger.LogInformation("Updating Configuration");
 
-                HttpResponseMessage webResponse = await webClient.GetAsync(url);
-                string jsonContent = await webResponse.Content.ReadAsStringAsync();
-                JObject jObject = JObject.Parse(jsonContent);
+                FirebaseClient firebase = new FirebaseClient(firebaseRootUrl, new FirebaseOptions { AuthTokenAsyncFactory = () => Task.FromResult(firebaseToken) });
 
-                newCat += "\t\tapplication " + app.Key + " {\n";
+                string CopyFileToLocation = "/usr/local/nginx/conf/nginx.conf";
 
-                foreach (var obj in jObject)
+                string concat = "\n\nrtmp { \n" +
+                    "\tserver { \n" +
+                    "\t\tlisten 1935;\n" +
+                    "\t\tchunk_size 4096;\n\n";
+
+                string SourceFile = "./nginx.conf.base";
+                string newFile = "./nginx.conf.new";
+
+                var FbChild = firebase.Child("applications");
+
+                var FbObservable = FbChild.AsObservable<RtmpApplications>();
+
+                if (System.IO.File.Exists(newFile))
+                    System.IO.File.Delete(newFile);
+
+                System.IO.File.Copy(SourceFile, newFile);
+
+                HttpClient webClient = new HttpClient();
+
+                var apps = await FbChild.OnceAsync<RtmpApplications>();
+
+                foreach (var app in apps)
                 {
-                    if (obj.Key == "push_urls")
+                    string newCat = string.Empty;
+                    string url = $"{firebaseRootUrl}/applications/{app.Key}/.json?auth={firebaseToken}";
+
+                    HttpResponseMessage webResponse = await webClient.GetAsync(url);
+                    string jsonContent = await webResponse.Content.ReadAsStringAsync();
+                    JObject jObject = JObject.Parse(jsonContent);
+
+                    newCat += "\t\tapplication " + app.Key + " {\n";
+
+                    foreach (var obj in jObject)
                     {
-                        if (obj.Value != null && (obj.Value).HasValues == true)
+                        if (obj.Key == "push_urls")
                         {
-                            foreach (var subObj in obj.Value.Children())
+                            if (obj.Value != null && (obj.Value).HasValues == true)
                             {
-                                if (subObj.Path != "path[0]")
+                                foreach (var subObj in obj.Value.Children())
                                 {
-                                    var urls = subObj.Value<string>();
-                                    if (urls != null)
-                                        newCat += "\t\t\tpush " + urls + ";\n";
+                                    if (subObj.Path != "path[0]")
+                                    {
+                                        var urls = subObj.Value<string>();
+                                        if (urls != null)
+                                            newCat += "\t\t\tpush " + urls + ";\n";
+                                    }
                                 }
                             }
                         }
+                        else
+                        {
+                            newCat += "\t\t\t" + obj.Key + " " + obj.Value + ";\n";
+                        }
                     }
-                    else
-                    {
-                        newCat += "\t\t\t" + obj.Key + " " + obj.Value + ";\n";
-                    }
+
+                    newCat += "\t\t} \n\n";
+
+                    concat += newCat;
                 }
 
-                newCat += "\t\t} \n\n";
+                concat += "\t} \n" +
+                    "} \n";
 
-                concat += newCat;
+
+                // Write to File //
+                using (System.IO.StreamWriter sw = System.IO.File.AppendText(newFile))
+                {
+                    sw.Write(concat);
+                }
+
+                if (System.IO.File.Exists(CopyFileToLocation))
+                    System.IO.File.Delete(CopyFileToLocation);
+
+                System.IO.File.Copy(newFile, CopyFileToLocation);
+
+                return "Configuration Generated!";
             }
-
-            concat += "\t} \n" +
-                "} \n";
-
-
-            // Write to File //
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(newFile))
+            catch(Exception exception)
             {
-                sw.Write(concat);
+                Console.WriteLine(exception.Message);
+                return "Failed to Generate Config";
             }
-
-            if (System.IO.File.Exists(CopyFileToLocation))
-                System.IO.File.Delete(CopyFileToLocation);
-
-            System.IO.File.Copy(newFile, CopyFileToLocation);
-
-            return "Configuration Generated!";
         }
 
         public static string StartServer()
         {
-            string output = "/usr/local/nginx/sbin/nginx".Bash();
+            string output = string.Empty;
 
-            if (output != null)
-                return "An Error Occured. This service might already be running.";
-            else
-                return "Server Starting...";
+            try
+            {
+                "/usr/local/nginx/sbin/nginx".Bash();
+                output = "Server Started";
+            }
+            catch(Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                output = "Failed to start server.";
+            }
+            
+            return output;
         }
 
         public static string StopServer()
@@ -145,17 +163,37 @@ namespace NginxConfigWeb.Tools
 
             try
             {
-                output = "/usr/local/nginx/sbin/nginx -s stop".Bash();
+                "/usr/local/nginx/sbin/nginx -s stop".Bash();
+                output = "Server Stopped";
             }
-            catch(Exception ex)
+            catch(Exception exception)
             {
-                Console.WriteLine("Error");
+                Console.WriteLine(exception.Message);
+                output = "Failed to stop server.";
             }
 
-            if (output != null)
-                return "An Error Occured. This service might not be running yet.";
-            else
-                return "Server Stopping...";
+            return output;
+        }
+
+        public static async Task<string> GetStatus()
+        {
+            HttpClient webClient = new HttpClient();
+            try
+            {
+                var response = await webClient.GetAsync("https://api.jmliebe.com");
+
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.OK:
+                        return "System OK";
+                    default:
+                        return "System Offline/Error";
+                }
+            }
+            catch(Exception except)
+            {
+                return except.Message;
+            }
         }
     }
 }

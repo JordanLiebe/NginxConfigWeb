@@ -32,7 +32,9 @@ namespace NginxConfigWeb.Controllers
             if (message != "" && message != null)
                 ViewBag.message = message;
             else
-                ViewBag.message = "System Good";
+                ViewBag.message = "No Message";
+
+            ViewBag.status = await ServerInteractions.GetStatus();
 
             return View(Apps);
         }
@@ -40,31 +42,31 @@ namespace NginxConfigWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Control(string Action)
         {
-            string Output = "";
+            string Message = "";
 
             switch(Action)
             {
                 case "Start":
 
                     _logger.LogInformation("Starting Server...");
-                    Output = ServerInteractions.StartServer();
-                    _logger.LogInformation(Output);
+                    Message = ServerInteractions.StartServer();
+                    _logger.LogInformation(Message);
                     break;
                 case "Stop":
                     _logger.LogInformation("Stopping Server...");
-                    Output = ServerInteractions.StopServer();
-                    _logger.LogInformation(Output);
+                    Message = ServerInteractions.StopServer();
+                    _logger.LogInformation(Message);
                     break;
                 case "Generate":
                     _logger.LogInformation("Generating Config...");
-                    Output = await ServerInteractions.UpdateConfig(_logger);
+                    Message = await ServerInteractions.UpdateConfig(_logger);
                     break;
                 default:
                     _logger.LogInformation("Unknown Command");
                     break;
             }
 
-            return RedirectToAction("Index", new { message = Output });
+            return RedirectToAction("Index", new { message = Message });
         }
 
         public IActionResult Privacy()

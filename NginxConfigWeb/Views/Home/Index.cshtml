@@ -3,36 +3,38 @@
     ViewData["Title"] = "Control Center";
 }
 
-    <div class="text-center">
-        <h2>Applications [<a asp-action="Create" asp-controller="Application">Add</a>]</h2>
-        <table width="100%" style="margin-bottom: 50px;">
+<div class="text-center">
+    <h2>Applications [<a asp-action="Create" asp-controller="Application">Add</a>]</h2>
+    <table width="100%" style="margin-bottom: 50px;">
+        <tr>
+            <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].name)</th>
+            <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].live)</th>
+            <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].push_urls)</th>
+            <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].record)</th>
+            <th style="font-size: 25px; padding: 5px">Action</th>
+        </tr>
+        @foreach (var App in Model)
+        {
+            int count = 0;
+            if (App.push_urls != null)
+                count = App.push_urls.Length;
             <tr>
-                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].name)</th>
-                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].live)</th>
-                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].push_urls)</th>
-                <th style="font-size: 25px; padding: 5px">@Html.DisplayNameFor(model => model[0].record)</th>
-                <th style="font-size: 25px; padding: 5px">Action</th>
+                <td style="font-size: 22px; padding: 10px">@App.name</td>
+                <td style="font-size: 22px; padding: 10px">@App.live</td>
+                <td style="font-size: 22px; padding: 10px">@count</td>
+                <td style="font-size: 22px; padding: 10px">@App.record</td>
+                <td style="font-size: 22px; padding: 10px">
+                    <a asp-controller="Application" asp-action="Modify" asp-route-Id="@App.name">Edit</a> |
+                    <a asp-controller="Application" asp-action="Delete" asp-route-Id="@App.name">Delete</a>
+                </td>
             </tr>
-            @foreach (var App in Model)
-            {
-                int count = 0;
-                if (App.push_urls != null)
-                    count = App.push_urls.Length;
-                <tr>
-                    <td style="font-size: 22px; padding: 10px">@App.name</td>
-                    <td style="font-size: 22px; padding: 10px">@App.live</td>
-                    <td style="font-size: 22px; padding: 10px">@count</td>
-                    <td style="font-size: 22px; padding: 10px">@App.record</td>
-                    <td style="font-size: 22px; padding: 10px">
-                        <a asp-controller="Application" asp-action="Modify" asp-route-Id="@App.name">Edit</a> |
-                        <a asp-controller="Application" asp-action="Delete" asp-route-Id="@App.name">Delete</a>
-                    </td>
-                </tr>
-            }
-        </table>
-        <hr />
-        <h2>Commands</h2>
-        <div style="display: flex; flex-direction: row; justify-content: space-around; padding: 30px; margin-bottom: 50px;">
+        }
+    </table>
+    <hr />
+    <h2>Commands</h2>
+    <div style="display: flex; flex-direction: row; justify-content: space-around; padding: 30px; margin-bottom: 50px;">
+        @if (ViewBag.status != "System OK")
+        {
             <div>
                 <form asp-action="Control" style="padding: 10px">
                     <fieldset>
@@ -41,14 +43,9 @@
                     </fieldset>
                 </form>
             </div>
-            <div>
-                <form asp-action="Control" style="padding: 10px">
-                    <fieldset>
-                        <input type="hidden" name="Action" value="Generate" />
-                        <button style="padding: 10px; font-size: 22px;">Generate Config</button>
-                    </fieldset>
-                </form>
-            </div>
+        }
+        else
+        {
             <div>
                 <form asp-action="Control" style="padding: 10px">
                     <fieldset>
@@ -57,8 +54,31 @@
                     </fieldset>
                 </form>
             </div>
+        }
+        <div>
+            <form asp-action="Control" style="padding: 10px">
+                <fieldset>
+                    <input type="hidden" name="Action" value="Generate" />
+                    <button style="padding: 10px; font-size: 22px;">Generate Config</button>
+                </fieldset>
+            </form>
         </div>
-        <hr />
-        <h2>Server Status</h2>
-        <div id="message" style="color: red; font-size: 22px;">@ViewBag.message</div>
     </div>
+    <hr />
+    <h3>Message</h3>
+    <div id="message" style="color: blue; font-size: 22px;">@ViewBag.message</div>
+    <hr />
+    <h2>Server Status</h2>
+    @if (ViewBag.status == "System OK")
+    {
+        <div id="status" style="color: green; font-size: 22px;">
+            @ViewBag.status
+        </div>
+    }
+    else
+    {
+        <div id="status" style="color: red; font-size: 22px;">
+            @ViewBag.status
+        </div>
+    }
+</div>
