@@ -175,12 +175,12 @@ namespace NginxConfigWeb.Tools
             return output;
         }
 
-        public static async Task<string> GetStatus()
+        public static async Task<string> GetStatus(string Url)
         {
             HttpClient webClient = new HttpClient();
             try
             {
-                var response = await webClient.GetAsync("https://api.jmliebe.com");
+                var response = await webClient.GetAsync(Url);
 
                 switch (response.StatusCode)
                 {

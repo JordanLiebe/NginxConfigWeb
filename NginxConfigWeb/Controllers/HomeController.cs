@@ -34,7 +34,8 @@ namespace NginxConfigWeb.Controllers
             else
                 ViewBag.message = "No Message";
 
-            ViewBag.status = await ServerInteractions.GetStatus();
+            string statusUrl = _configuration.GetValue<string>("StatusUrl");
+            ViewBag.status = await ServerInteractions.GetStatus(statusUrl);
 
             return View(Apps);
         }
