@@ -182,6 +182,8 @@ namespace NginxConfigWeb.Tools
             {
                 var response = await webClient.GetAsync(Url);
 
+                Console.WriteLine($"Response Code: {response.StatusCode}");
+
                 switch (response.StatusCode)
                 {
                     case HttpStatusCode.OK:
