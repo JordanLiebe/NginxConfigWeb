@@ -134,12 +134,12 @@ namespace NginxConfigWeb.Tools
             }
             catch(Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                logger.LogError(exception.Message);
                 return "Failed to Generate Config";
             }
         }
 
-        public static string StartServer()
+        public static string StartServer(ILogger logger)
         {
             string output = string.Empty;
 
@@ -150,14 +150,14 @@ namespace NginxConfigWeb.Tools
             }
             catch(Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                logger.LogError(exception.Message);
                 output = "Failed to start server.";
             }
             
             return output;
         }
 
-        public static string StopServer()
+        public static string StopServer(ILogger logger)
         {
             string output = string.Empty;
 
@@ -168,21 +168,21 @@ namespace NginxConfigWeb.Tools
             }
             catch(Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                logger.LogError(exception.Message);
                 output = "Failed to stop server.";
             }
 
             return output;
         }
 
-        public static async Task<string> GetStatus(string Url)
+        public static async Task<string> GetStatus(string Url, ILogger logger)
         {
             HttpClient webClient = new HttpClient();
             try
             {
                 var response = await webClient.GetAsync(Url);
-
-                Console.WriteLine($"Response Code: {response.StatusCode}");
+                
+                logger.LogInformation($"Response Code: {response.StatusCode}");
 
                 switch (response.StatusCode)
                 {

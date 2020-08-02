@@ -35,7 +35,7 @@ namespace NginxConfigWeb.Controllers
                 ViewBag.message = "No Message";
 
             string statusUrl = _configuration.GetValue<string>("StatusUrl");
-            ViewBag.status = await ServerInteractions.GetStatus(statusUrl);
+            ViewBag.status = await ServerInteractions.GetStatus(statusUrl, _logger);
 
             return View(Apps);
         }
@@ -50,12 +50,12 @@ namespace NginxConfigWeb.Controllers
                 case "Start":
 
                     _logger.LogInformation("Starting Server...");
-                    Message = ServerInteractions.StartServer();
+                    Message = ServerInteractions.StartServer(_logger);
                     _logger.LogInformation(Message);
                     break;
                 case "Stop":
                     _logger.LogInformation("Stopping Server...");
-                    Message = ServerInteractions.StopServer();
+                    Message = ServerInteractions.StopServer(_logger);
                     _logger.LogInformation(Message);
                     break;
                 case "Generate":
