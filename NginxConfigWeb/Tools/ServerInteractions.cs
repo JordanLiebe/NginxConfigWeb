@@ -158,6 +158,7 @@ namespace NginxConfigWeb.Tools
             catch(Exception exception)
             {
                 logger.LogError(exception.Message);
+                error = exception.Message;
                 output = "Failed to start server.";
             }
             
@@ -181,6 +182,7 @@ namespace NginxConfigWeb.Tools
             catch(Exception exception)
             {
                 logger.LogError(exception.Message);
+                error = exception.Message;
                 output = "Failed to stop server.";
             }
 
@@ -204,9 +206,10 @@ namespace NginxConfigWeb.Tools
                         return "System Offline/Error";
                 }
             }
-            catch(Exception except)
+            catch(Exception exception)
             {
-                return except.Message;
+                logger.LogInformation(exception.Message);
+                return "System Offline/Error"; ;
             }
         }
     }
